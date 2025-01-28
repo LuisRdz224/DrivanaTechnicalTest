@@ -1,0 +1,9 @@
+<div class="card mb-4" (click)="handleCardClick()">
+    <div class="card-body">
+        <h5 class="card-title">{{ vehicle.name }}</h5>
+        <p class="card-text">Price per day: ${{ vehicle.pricePerDay }}</p>
+        <span class="badge" [ngClass]="vehicle.status === 'Available' ? 'bg-success' : 'bg-danger'">
+            {{ vehicle.status }}
+        </span>
+    </div>
+</div>

@@ -13,12 +13,8 @@
         "end_date": "2025-02-20"
       },
       {
-        "start_date": "2025-01-15",
-        "end_date": "2025-01-15"
-      },
-      {
-        "start_date": "2025-01-16",
-        "end_date": "2025-01-16"
+        "start_date": "2025-01-28",
+        "end_date": "2025-01-28"
       }
     ]
   },
@@ -26,7 +22,12 @@
     "id": 2,
     "name": "Ford Mustang",
     "price_per_day": 800,
-    "reservations": []
+    "reservations": [
+      {
+        "start_date": "2025-01-28",
+        "end_date": "2025-01-28"
+      }
+    ]
   },
   {
     "id": 3,
@@ -36,6 +37,10 @@
       {
         "start_date": "2025-02-01",
         "end_date": "2025-02-05"
+      },
+      {
+        "start_date": "2025-01-28",
+        "end_date": "2025-01-28"
       }
     ]
   },
@@ -51,6 +56,10 @@
       {
         "start_date": "2025-02-10",
         "end_date": "2025-02-12"
+      },
+      {
+        "start_date": "2025-01-28",
+        "end_date": "2025-01-28"
       }
     ]
   },
@@ -70,5 +79,138 @@
         "end_date": "2025-02-07"
       }
     ]
+  },
+  {
+    "id": 7,
+    "name": "Volkswagen Jetta",
+    "price_per_day": 450,
+    "reservations": [
+      {
+        "start_date": "2025-03-10",
+        "end_date": "2025-03-15"
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "name": "Nissan Sentra",
+    "price_per_day": 550,
+    "reservations": [
+      {
+        "start_date": "2025-04-01",
+        "end_date": "2025-04-05"
+      },
+      {
+        "start_date": "2025-04-10",
+        "end_date": "2025-04-12"
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "name": "Mercedes-Benz C-Class",
+    "price_per_day": 1000,
+    "reservations": []
+  },
+  {
+    "id": 10,
+    "name": "Jeep Wrangler",
+    "price_per_day": 700,
+    "reservations": [
+      {
+        "start_date": "2025-03-20",
+        "end_date": "2025-03-25"
+      }
+    ]
+  },
+  {
+    "id": 11,
+    "name": "Hyundai Tucson",
+    "price_per_day": 650,
+    "reservations": [
+      {
+        "start_date": "2025-05-01",
+        "end_date": "2025-05-03"
+      }
+    ]
+  },
+  {
+    "id": 12,
+    "name": "Kia Sportage",
+    "price_per_day": 580,
+    "reservations": []
+  },
+  {
+    "id": 13,
+    "name": "Subaru Outback",
+    "price_per_day": 720,
+    "reservations": [
+      {
+        "start_date": "2025-06-10",
+        "end_date": "2025-06-15"
+      }
+    ]
+  },
+  {
+    "id": 14,
+    "name": "Mazda CX-5",
+    "price_per_day": 680,
+    "reservations": [
+      {
+        "start_date": "2025-07-01",
+        "end_date": "2025-07-05"
+      }
+    ]
+  },
+  {
+    "id": 15,
+    "name": "Ford Explorer",
+    "price_per_day": 950,
+    "reservations": []
+  },
+  {
+    "id": 16,
+    "name": "Toyota RAV4",
+    "price_per_day": 780,
+    "reservations": [
+      {
+        "start_date": "2025-08-15",
+        "end_date": "2025-08-20"
+      }
+    ]
+  },
+  {
+    "id": 17,
+    "name": "Chevrolet Silverado",
+    "price_per_day": 1100,
+    "reservations": []
+  },
+  {
+    "id": 18,
+    "name": "Dodge Ram",
+    "price_per_day": 1050,
+    "reservations": [
+      {
+        "start_date": "2025-09-01",
+        "end_date": "2025-09-05"
+      }
+    ]
+  },
+  {
+    "id": 19,
+    "name": "GMC Sierra",
+    "price_per_day": 980,
+    "reservations": [
+      {
+        "start_date": "2025-10-10",
+        "end_date": "2025-10-15"
+      }
+    ]
+  },
+  {
+    "id": 20,
+    "name": "Ford F-150",
+    "price_per_day": 1200,
+    "reservations": []
   }
 ]

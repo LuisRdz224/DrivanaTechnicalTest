@@ -1,0 +1,17 @@
+<div class="mb-3">
+    <h2 class="mb-3">Select Date Range</h2>
+    <div class="row g-3">
+        <div class="col-md-6">
+            <label for="startDate" class="form-label">Start Date</label>
+            <input type="date" id="startDate" class="form-control" [(ngModel)]="startDate" [min]="today"
+                (change)="onDateChange()">
+        </div>
+        <div class="col-md-6">
+            <label for="endDate" class="form-label">End Date</label>
+            <input type="date" id="endDate" class="form-control" [(ngModel)]="endDate" [min]="startDate || today">
+        </div>
+        <div class="col-12 text-end">
+            <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,57 @@
+/* Estilos para el fondo oscuro del modal */
+.modal-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    /* Fondo oscuro */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    /* Asegúrate de que esté sobre otros elementos */
+}
+
+/* Estilos para el contenido del modal */
+.modal {
+    background-color: #fff;
+    /* Fondo blanco para el contenido del modal */
+    border-radius: 8px;
+    width: 90%;
+    max-width: 500px;
+    /* Ancho máximo */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    padding: 20px;
+}
+
+/* Cabecera del modal */
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 15px;
+}
+
+/* Botón para cerrar */
+.modal-header .close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* Cuerpo del modal */
+.modal-body {
+    margin-bottom: 15px;
+    font-size: 1rem;
+}
+
+/* Pie del modal */
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+}
