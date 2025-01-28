@@ -11,7 +11,7 @@ export class FiltersComponent {
   @Output() filterChange = new EventEmitter<any>();
 
   statusFilter: string = 'all';
-  priceRange: { min: number; max: number } = { min: 0, max: 1000 };
+  priceRange: { min: number; max: number } = { min: 0, max: 2500 };
 
   applyFilters(): void {
     this.filterChange.emit({

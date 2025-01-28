@@ -6,34 +6,32 @@ import { VehicleService } from '../../services/vehicle.service';
 import { CheckVehicleAvailabilityService } from '../../services/check-availability.service';
 import { ReservationService } from '../../services/reservation.service';
 import { ApiError, CheckAvailabilityRequest, CheckAvailabilityResponse } from '../../models/check-availability.model';
+import { PaginationService } from '../../services/pagination.service';
 
 @Component({
   selector: 'vehicle-list',
   standalone: false,
   templateUrl: './vehicle-list.component.html',
-  styleUrl: './vehicle-list.component.css'
+  styleUrl: './vehicle-list.component.css',
 })
-
 export class VehicleListComponent implements OnInit {
+  itemsPerPage = 9;
+  currentPage = 1;
+  totalPages = 0;
+  pages: number[] = [];
+
   vehicles: Vehicle[] = [];
   paginatedVehicles: Vehicle[] = [];
+  filteredVehicles: Vehicle[] = [];
   isModalOpen = false;
   selectedVehicle: Vehicle | null = null;
-
-  startDate: Date | undefined = undefined;
-  endDate: Date | undefined = undefined;
-
-  minDate: Date = new Date();
-  maxDate: Date = new Date(new Date().setFullYear(new Date().getFullYear() + 1));
-
   successMessage: string | null = null;
   errorMessage: string | null = null;
 
-  itemsPerPage: number = 9;
-  currentPage: number = 1;
-  totalPages: number = 0;
-  pages: number[] = [];
-
+  startDate?: Date;
+  endDate?: Date;
+  minDate: Date = new Date();
+  maxDate: Date = new Date(new Date().setFullYear(new Date().getFullYear() + 1));
   blockedDates: Date[] = [];
   bsConfig: Partial<BsDatepickerConfig> = {
     isAnimated: true,
@@ -45,34 +43,57 @@ export class VehicleListComponent implements OnInit {
   constructor(
     private vehicleService: VehicleService,
     private availabilityService: CheckVehicleAvailabilityService,
-    private reservationService: ReservationService
+    private reservationService: ReservationService,
+    private paginationService: PaginationService
   ) { }
 
   ngOnInit(): void {
-    this.updateData();
+    this.loadVehicles();
+  }
+
+  private loadVehicles(): void {
+    this.vehicleService.getVehicles().subscribe((data) => {
+      this.vehicles = data;
+      this.filteredVehicles = [...this.vehicles];
+
+      this.paginationService.setItemsPerPage(9);
+      this.totalPages = this.paginationService.calculateTotalPages(this.filteredVehicles.length);
+      this.pages = this.paginationService.generatePages();
+      this.updatePaginatedVehicles(1, this.filteredVehicles);
+    });
+  }
+
+
+  updatePaginatedVehicles(page: number, vehicles: Vehicle[] = this.vehicles): void {
+    this.paginatedVehicles = this.paginationService.paginate(vehicles, page);
+  }
+
+  goToPage(page: number): void {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.updatePaginatedVehicles(this.currentPage, this.filteredVehicles);
+    }
   }
 
   applyFilters(filters: { status: string; priceRange: { min: number; max: number } }): void {
-    let filteredVehicles = [...this.vehicles];
+    this.filteredVehicles = [...this.vehicles];
+
     if (filters.status === 'reserved') {
-      filteredVehicles = filteredVehicles.filter((v) => v.status === 'Reserved');
+      this.filteredVehicles = this.filteredVehicles.filter((v) => v.status === 'Reserved');
     } else if (filters.status === 'available') {
-      filteredVehicles = filteredVehicles.filter((v) => v.status === 'Available');
+      this.filteredVehicles = this.filteredVehicles.filter((v) => v.status === 'Available');
     }
-    filteredVehicles = filteredVehicles.filter(
+
+    this.filteredVehicles = this.filteredVehicles.filter(
       (v) => v.pricePerDay >= filters.priceRange.min && v.pricePerDay <= filters.priceRange.max
     );
-    this.paginatedVehicles = filteredVehicles.slice(
-      (this.currentPage - 1) * this.itemsPerPage,
-      this.currentPage * this.itemsPerPage
-    );
-    this.totalPages = Math.ceil(filteredVehicles.length / this.itemsPerPage);
-    this.pages = Array.from({ length: this.totalPages }, (_, i) => i + 1);
+
+    this.totalPages = this.paginationService.calculateTotalPages(this.filteredVehicles.length);
+    this.pages = this.paginationService.generatePages();
+    this.updatePaginatedVehicles(1, this.filteredVehicles);
   }
 
   makeReservation(): void {
-    this.validateDates();
-
     if (this.startDate && this.endDate && this.selectedVehicle) {
       const reservationData = {
         id: this.selectedVehicle.id.toString(),
@@ -82,52 +103,35 @@ export class VehicleListComponent implements OnInit {
 
       this.reservationService.makeReservation(reservationData).subscribe({
         next: (response) => {
-          this.successMessage = response.message;
-          this.errorMessage = null;
-
-          const updatedVehicle = response.vehicle;
-          const index = this.vehicles.findIndex(v => v.id === updatedVehicle.id);
-          if (index !== -1) {
-            this.vehicles[index] = {
-              ...this.vehicles[index],
-              ...updatedVehicle,
-              reservations: [...updatedVehicle.reservations],
-              status: updatedVehicle.reservations.length > 0 ? 'Reserved' : 'Available',
-            };
-          }
-          this.updatePaginatedVehicles();
-          console.log('Vehículos actualizados:', this.vehicles);
+          this.handleReservationSuccess(response);
         },
         error: (err) => {
-          this.errorMessage = err.error?.message || 'An error occurred.';
-          this.successMessage = null;
+          this.handleError(err);
         },
       });
     }
   }
 
+  private handleReservationSuccess(response: any): void {
+    this.successMessage = response.message;
+    this.errorMessage = null;
 
-  private updateData(): void {
-    this.vehicleService.getVehicles().subscribe((data) => {
-      this.vehicles = data;
-      this.totalPages = Math.ceil(this.vehicles.length / this.itemsPerPage);
-      this.pages = Array.from({ length: this.totalPages }, (_, i) => i + 1);
-      this.updatePaginatedVehicles();
-    });
-  }
-
-  updatePaginatedVehicles(): void {
-    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    const endIndex = startIndex + this.itemsPerPage;
-    this.paginatedVehicles = this.vehicles.slice(startIndex, endIndex);
-  }
-
-  goToPage(page: number): void {
-    if (page < 1 || page > this.totalPages) {
-      return;
+    const updatedVehicle = response.vehicle;
+    const index = this.vehicles.findIndex((v) => v.id === updatedVehicle.id);
+    if (index !== -1) {
+      this.vehicles[index] = {
+        ...this.vehicles[index],
+        ...updatedVehicle,
+        reservations: [...updatedVehicle.reservations],
+        status: updatedVehicle.reservations.length > 0 ? 'Reserved' : 'Available',
+      };
     }
-    this.currentPage = page;
-    this.updatePaginatedVehicles();
+    this.updatePaginatedVehicles(1);
+  }
+
+  private handleError(err: ApiError): void {
+    this.errorMessage = err.errors[0]?.msg || 'An unknown error occurred.';
+    this.successMessage = null;
   }
 
   openModal(vehicleId: number): void {
@@ -162,7 +166,6 @@ export class VehicleListComponent implements OnInit {
     localDate.setHours(0, 0, 0, 0);
     return localDate;
   }
-
 
   checkAvailability(): void {
     this.validateDates();
@@ -211,7 +214,6 @@ export class VehicleListComponent implements OnInit {
     const [year, month, day] = dateString.split('-').map(Number);
     return new Date(year, month - 1, day);
   }
-
 
   isDateBlocked = (date: Date): boolean => {
     return this.blockedDates.some(
