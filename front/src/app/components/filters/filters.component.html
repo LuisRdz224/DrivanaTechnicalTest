@@ -1,0 +1,20 @@
+<div class="filters-container">
+    <div class="filter-item">
+        <label for="statusFilter">Status:</label>
+        <select id="statusFilter" [(ngModel)]="statusFilter" (change)="applyFilters()">
+            <option value="all">All</option>
+            <option value="reserved">Reserved</option>
+            <option value="available">Available</option>
+        </select>
+    </div>
+
+    <div class="filter-item">
+        <label for="priceMin">Minimum Price:</label>
+        <input id="priceMin" type="number" [(ngModel)]="priceRange.min" (input)="applyFilters()" />
+    </div>
+
+    <div class="filter-item">
+        <label for="priceMax">Maximum Price:</label>
+        <input id="priceMax" type="number" [(ngModel)]="priceRange.max" (input)="applyFilters()" />
+    </div>
+</div>

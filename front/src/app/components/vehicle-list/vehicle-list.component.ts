@@ -52,6 +52,24 @@ export class VehicleListComponent implements OnInit {
     this.updateData();
   }
 
+  applyFilters(filters: { status: string; priceRange: { min: number; max: number } }): void {
+    let filteredVehicles = [...this.vehicles];
+    if (filters.status === 'reserved') {
+      filteredVehicles = filteredVehicles.filter((v) => v.status === 'Reserved');
+    } else if (filters.status === 'available') {
+      filteredVehicles = filteredVehicles.filter((v) => v.status === 'Available');
+    }
+    filteredVehicles = filteredVehicles.filter(
+      (v) => v.pricePerDay >= filters.priceRange.min && v.pricePerDay <= filters.priceRange.max
+    );
+    this.paginatedVehicles = filteredVehicles.slice(
+      (this.currentPage - 1) * this.itemsPerPage,
+      this.currentPage * this.itemsPerPage
+    );
+    this.totalPages = Math.ceil(filteredVehicles.length / this.itemsPerPage);
+    this.pages = Array.from({ length: this.totalPages }, (_, i) => i + 1);
+  }
+
   makeReservation(): void {
     this.validateDates();
 

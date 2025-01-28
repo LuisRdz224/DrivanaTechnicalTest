@@ -4,28 +4,26 @@ import { FormsModule } from '@angular/forms';
 import { provideHttpClient } from '@angular/common/http';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
 import { AppRoutingModule } from './app-routing.module';
+
 import { AppComponent } from './app.component';
-import { DateRangeSelectorComponent } from './components/date-range-selector/date-range-selector.component';
-import { VehicleListComponent } from './components/vehicle-list/vehicle-list.component';
+import { FiltersComponent } from './components/filters/filters.component';
 import { VehicleCardComponent } from './components/vehicle-card/vehicle-card.component';
-import { FooterComponent } from './components/footer/footer.component';
+import { VehicleListComponent } from './components/vehicle-list/vehicle-list.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    DateRangeSelectorComponent,
-    VehicleListComponent,
+    FiltersComponent,
     VehicleCardComponent,
-    FooterComponent,
+    VehicleListComponent,
   ],
   imports: [
-    BrowserModule,
-    FormsModule,
     AppRoutingModule,
+    BrowserAnimationsModule,
+    BrowserModule,
     BsDatepickerModule.forRoot(),
-    BrowserAnimationsModule
+    FormsModule,
   ],
   providers: [
     provideClientHydration(withEventReplay()),
