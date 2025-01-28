@@ -10,6 +10,8 @@ import { AppComponent } from './app.component';
 import { FiltersComponent } from './components/filters/filters.component';
 import { VehicleCardComponent } from './components/vehicle-card/vehicle-card.component';
 import { VehicleListComponent } from './components/vehicle-list/vehicle-list.component';
+import { HeaderComponent } from './components/header/header.component';
+import { FooterComponent } from './components/footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +19,8 @@ import { VehicleListComponent } from './components/vehicle-list/vehicle-list.com
     FiltersComponent,
     VehicleCardComponent,
     VehicleListComponent,
+    HeaderComponent,
+    FooterComponent,
   ],
   imports: [
     AppRoutingModule,
