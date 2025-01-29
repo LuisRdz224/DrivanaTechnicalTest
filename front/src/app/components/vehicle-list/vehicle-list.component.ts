@@ -106,7 +106,7 @@ export class VehicleListComponent implements OnInit {
           this.handleReservationSuccess(response);
         },
         error: (err) => {
-          this.handleError(err);
+          this.handleReservationError(err.error);
         },
       });
     }
@@ -129,10 +129,20 @@ export class VehicleListComponent implements OnInit {
     this.updatePaginatedVehicles(1);
   }
 
-  private handleError(err: ApiError): void {
-    this.errorMessage = err.errors[0]?.msg || 'An unknown error occurred.';
+  private handleReservationError(err: any): void {
+    console.error('Reservation Error:', err);
+
+    if (err && err.errors && Array.isArray(err.errors) && err.errors.length > 0) {
+      this.errorMessage = err.errors.map((e: { msg: string }) => e.msg).join(', ');
+    } else if (err && err.message) {
+      this.errorMessage = err.message;
+    } else {
+      this.errorMessage = 'Error while making reservation. Please try again.';
+    }
+
     this.successMessage = null;
   }
+
 
   openModal(vehicleId: number): void {
     this.selectedVehicle = this.vehicles.find(v => v.id === vehicleId) || null;
